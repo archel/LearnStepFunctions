@@ -1,0 +1,12 @@
+service: AttackMultiplierLambda
+
+provider:
+  name: aws
+  runtime: nodejs6.10
+  profile: serverless-admin-dj
+  region: eu-west-1
+  stage: dev
+
+functions:
+  attackMultiplierLambda:
+    handler: handler.attackMultiplierLambda
