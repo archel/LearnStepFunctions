@@ -1,4 +1,4 @@
-service: AttackMultiplierLambda
+service: DefenseMultiplierLambda
 
 provider:
   name: aws
@@ -8,5 +8,5 @@ provider:
   stage: dev
 
 functions:
-  AttackMultiplier:
-    handler: handler.attackMultiplier
+  DefenseMultiplier:
+    handler: handler.defenseMultiplier
