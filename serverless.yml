@@ -1,5 +1,11 @@
 service: LearnStepFunctions
 
+custom:
+  accountId: 477923721911
+  attackMultiplierService: AttackMultiplierLambda
+  defenseMultiplierService: DefenseMultiplierLambda
+  calculateResultService: CalculateAttackResultLambda
+
 provider:
   name: aws
   runtime: nodejs6.10
@@ -22,25 +28,27 @@ stepFunctions:
             - StartAt: AttackMultiplier
               States:
                 AttackMultiplier:
-                  Type: Pass
+                  Type: Task
+                  Resource: arn:aws:lambda:${opt:region}:${self:custom.accountId}:function:${self:custom.attackMultiplierService}-${opt:stage}-AttackMultiplier
                   End: true
             - StartAt: DefenseMultiplier
               States:
                 DefenseMultiplier:
-                  Type: Pass
+                  Type: Task
+                  Resource: arn:aws:lambda:${opt:region}:${self:custom.accountId}:function:${self:custom.defenseMultiplierService}-${opt:stage}-DefenseMultiplier
                   End: true
             Next: CalculateAttackResult
           CalculateAttackResult:
-            Type: Pass
-            InputPath: $[0]
+            Type: Task
+            Resource: arn:aws:lambda:${opt:region}:${self:custom.accountId}:function:${self:custom.calculateResultService}-${opt:stage}-CalculateAttackResult
             Next: IsEnemyAlive
           IsEnemyAlive:
             Type: Choice
             Choices:
-              - Variable: $.value
+              - Variable: $.Defense.Player.Live
                 NumericGreaterThan: 0
                 Next: Alive
-              - Variable: $.value
+              - Variable: $.Defense.Player.Live
                 NumericLessThanEquals: 0
                 Next: Dead
           Alive:
