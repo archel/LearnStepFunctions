@@ -2,9 +2,7 @@ service: LearnStepFunctions
 
 custom:
   accountId: 477923721911
-  attackMultiplierService: AttackMultiplierLambda
-  defenseMultiplierService: DefenseMultiplierLambda
-  calculateResultService: CalculateAttackResultLambda
+  RPGService: RPGLambda
 
 provider:
   name: aws
@@ -29,18 +27,18 @@ stepFunctions:
               States:
                 AttackMultiplier:
                   Type: Task
-                  Resource: arn:aws:lambda:${opt:region}:${self:custom.accountId}:function:${self:custom.attackMultiplierService}-${opt:stage}-AttackMultiplier
+                  Resource: arn:aws:lambda:${opt:region}:${self:custom.accountId}:function:${self:custom.RPGService}-${opt:stage}-AttackMultiplier
                   End: true
             - StartAt: DefenseMultiplier
               States:
                 DefenseMultiplier:
                   Type: Task
-                  Resource: arn:aws:lambda:${opt:region}:${self:custom.accountId}:function:${self:custom.defenseMultiplierService}-${opt:stage}-DefenseMultiplier
+                  Resource: arn:aws:lambda:${opt:region}:${self:custom.accountId}:function:${self:custom.RPGService}-${opt:stage}-DefenseMultiplier
                   End: true
             Next: CalculateAttackResult
           CalculateAttackResult:
             Type: Task
-            Resource: arn:aws:lambda:${opt:region}:${self:custom.accountId}:function:${self:custom.calculateResultService}-${opt:stage}-CalculateAttackResult
+            Resource: arn:aws:lambda:${opt:region}:${self:custom.accountId}:function:${self:custom.RPGService}-${opt:stage}-CalculateAttackResult
             Next: IsEnemyAlive
           IsEnemyAlive:
             Type: Choice

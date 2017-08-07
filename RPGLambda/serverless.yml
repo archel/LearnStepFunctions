@@ -1,4 +1,4 @@
-service: DefenseMultiplierLambda
+service: RPGLambda
 
 provider:
   name: aws
@@ -10,3 +10,7 @@ provider:
 functions:
   DefenseMultiplier:
     handler: handler.defenseMultiplier
+  CalculateAttackResult:
+    handler: handler.calculateAttackResult
+  AttackMultiplier:
+    handler: handler.attackMultiplier
